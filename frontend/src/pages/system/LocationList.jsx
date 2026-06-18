@@ -19,7 +19,11 @@ const LocationList = () => {
   const loadData = async () => {
     setLoading(true)
     try {
-      let list = await getLocationList()
+      const params = {}
+      if (filters.status !== undefined && filters.status !== '') {
+        params.status = filters.status
+      }
+      let list = await getLocationList(params)
       list = list || []
       if (filters.keyword) {
         const kw = filters.keyword.toLowerCase()
@@ -28,9 +32,6 @@ const LocationList = () => {
           l.location_name.toLowerCase().includes(kw) ||
           l.area.toLowerCase().includes(kw)
         )
-      }
-      if (filters.status !== undefined && filters.status !== '') {
-        list = list.filter(l => l.status === filters.status)
       }
       setData(list)
     } catch (err) {

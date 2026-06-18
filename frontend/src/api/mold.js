@@ -20,10 +20,10 @@ export const deleteMold = (id) => request.delete(`/mold/${id}`)
 
 export const getCycleLogs = (moldId, params) => request.get(`/mold/cycle-logs/${moldId}`, { params })
 
-export const getLocationList = () => request.get('/location/list')
+export const getLocationList = (params) => request.get('/location/list', { params })
 
 export const createLocation = (data) => request.post('/location', data)
 
-export const getMachineList = () => request.get('/machine/list')
+export const getMachineList = (params) => request.get('/machine/list', { params })
 
 export const createMachine = (data) => request.post('/machine', data)

@@ -447,13 +447,33 @@ func GetMoldProductionStats(c *gin.Context) {
 
 func GetLocationList(c *gin.Context) {
 	var locations []models.Location
-	database.DB.Where("status = ?", 1).Order("id ASC").Find(&locations)
+	db := database.DB.Model(&models.Location{})
+
+	statusStr := c.Query("status")
+	if statusStr != "" {
+		status, err := strconv.Atoi(statusStr)
+		if err == nil {
+			db = db.Where("status = ?", status)
+		}
+	}
+
+	db.Order("id ASC").Find(&locations)
 	utils.Success(c, locations)
 }
 
 func GetMachineList(c *gin.Context) {
 	var machines []models.Machine
-	database.DB.Where("status = ?", 1).Order("id ASC").Find(&machines)
+	db := database.DB.Model(&models.Machine{})
+
+	statusStr := c.Query("status")
+	if statusStr != "" {
+		status, err := strconv.Atoi(statusStr)
+		if err == nil {
+			db = db.Where("status = ?", status)
+		}
+	}
+
+	db.Order("id ASC").Find(&machines)
 	utils.Success(c, machines)
 }
 

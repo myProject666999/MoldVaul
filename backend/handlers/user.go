@@ -88,7 +88,7 @@ type UserListQuery struct {
 	PageSize int    `form:"page_size,default=20"`
 	Keyword  string `form:"keyword"`
 	Role     int8   `form:"role"`
-	Status   int8   `form:"status"`
+	Status   *int8  `form:"status"`
 }
 
 func GetUserList(c *gin.Context) {
@@ -107,8 +107,8 @@ func GetUserList(c *gin.Context) {
 	if query.Role > 0 {
 		db = db.Where("role = ?", query.Role)
 	}
-	if query.Status > 0 {
-		db = db.Where("status = ?", query.Status)
+	if query.Status != nil {
+		db = db.Where("status = ?", *query.Status)
 	}
 
 	var total int64

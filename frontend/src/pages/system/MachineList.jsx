@@ -19,7 +19,11 @@ const MachineList = () => {
   const loadData = async () => {
     setLoading(true)
     try {
-      let list = await getMachineList()
+      const params = {}
+      if (filters.status !== undefined && filters.status !== '') {
+        params.status = filters.status
+      }
+      let list = await getMachineList(params)
       list = list || []
       if (filters.keyword) {
         const kw = filters.keyword.toLowerCase()
@@ -29,8 +33,8 @@ const MachineList = () => {
           m.workshop.toLowerCase().includes(kw)
         )
       }
-      if (filters.status !== undefined && filters.status !== '') {
-        list = list.filter(m => m.status === filters.status)
+      if (filters.machine_type) {
+        list = list.filter(m => m.machine_type === filters.machine_type)
       }
       setData(list)
     } catch (err) {
