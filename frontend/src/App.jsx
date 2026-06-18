@@ -7,6 +7,9 @@ import MoldList from './pages/MoldList'
 import BorrowList from './pages/BorrowList'
 import ProductionList from './pages/ProductionList'
 import MaintenanceList from './pages/MaintenanceList'
+import UserList from './pages/system/UserList'
+import LocationList from './pages/system/LocationList'
+import MachineList from './pages/system/MachineList'
 
 const PrivateRoute = ({ children }) => {
   const token = localStorage.getItem('token')
@@ -27,9 +30,9 @@ const App = () => {
         <Route path="borrow" element={<BorrowList />} />
         <Route path="production" element={<ProductionList />} />
         <Route path="maintenance" element={<MaintenanceList />} />
-        <Route path="system/users" element={<div style={{ padding: 24 }}><h2>用户管理</h2></div>} />
-        <Route path="system/locations" element={<div style={{ padding: 24 }}><h2>库位管理</h2></div>} />
-        <Route path="system/machines" element={<div style={{ padding: 24 }}><h2>设备管理</h2></div>} />
+        <Route path="system/users" element={<UserList />} />
+        <Route path="system/locations" element={<LocationList />} />
+        <Route path="system/machines" element={<MachineList />} />
       </Route>
       <Route path="*" element={<Navigate to="/" />} />
     </Routes>

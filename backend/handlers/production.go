@@ -484,3 +484,164 @@ func CreateMachine(c *gin.Context) {
 	}
 	utils.Success(c, machine)
 }
+
+func UpdateLocation(c *gin.Context) {
+	idStr := c.Param("id")
+	id, err := strconv.ParseUint(idStr, 10, 64)
+	if err != nil {
+		utils.Fail(c, 400, "ID格式错误")
+		return
+	}
+
+	var loc models.Location
+	if err := database.DB.First(&loc, id).Error; err != nil {
+		utils.Fail(c, 404, "库位不存在")
+		return
+	}
+
+	var req struct {
+		LocationCode string `json:"location_code"`
+		LocationName string `json:"location_name"`
+		Area         string `json:"area"`
+		Shelf        string `json:"shelf"`
+		Layer        *int   `json:"layer"`
+		Status       *int8  `json:"status"`
+		Remark       string `json:"remark"`
+	}
+	if err := c.ShouldBindJSON(&req); err != nil {
+		utils.Fail(c, 400, "参数错误")
+		return
+	}
+
+	updates := make(map[string]interface{})
+	if req.LocationCode != "" {
+		updates["location_code"] = req.LocationCode
+	}
+	if req.LocationName != "" {
+		updates["location_name"] = req.LocationName
+	}
+	if req.Area != "" {
+		updates["area"] = req.Area
+	}
+	if req.Shelf != "" {
+		updates["shelf"] = req.Shelf
+	}
+	if req.Layer != nil {
+		updates["layer"] = *req.Layer
+	}
+	if req.Status != nil {
+		updates["status"] = *req.Status
+	}
+	if req.Remark != "" {
+		updates["remark"] = req.Remark
+	}
+
+	if err := database.DB.Model(&loc).Updates(updates).Error; err != nil {
+		utils.Fail(c, 500, "更新失败")
+		return
+	}
+
+	utils.Success(c, loc)
+}
+
+func DeleteLocation(c *gin.Context) {
+	idStr := c.Param("id")
+	id, err := strconv.ParseUint(idStr, 10, 64)
+	if err != nil {
+		utils.Fail(c, 400, "ID格式错误")
+		return
+	}
+
+	var loc models.Location
+	if err := database.DB.First(&loc, id).Error; err != nil {
+		utils.Fail(c, 404, "库位不存在")
+		return
+	}
+
+	var count int64
+	database.DB.Model(&models.Mold{}).Where("location_id = ?", id).Count(&count)
+	if count > 0 {
+		utils.Fail(c, 400, "该库位下有模具，不能删除")
+		return
+	}
+
+	database.DB.Delete(&loc)
+	utils.Success(c, nil)
+}
+
+func UpdateMachine(c *gin.Context) {
+	idStr := c.Param("id")
+	id, err := strconv.ParseUint(idStr, 10, 64)
+	if err != nil {
+		utils.Fail(c, 400, "ID格式错误")
+		return
+	}
+
+	var machine models.Machine
+	if err := database.DB.First(&machine, id).Error; err != nil {
+		utils.Fail(c, 404, "设备不存在")
+		return
+	}
+
+	var req struct {
+		MachineCode   string `json:"machine_code"`
+		MachineName   string `json:"machine_name"`
+		MachineType   string `json:"machine_type"`
+		Specification string `json:"specification"`
+		Workshop      string `json:"workshop"`
+		Status        *int8  `json:"status"`
+		Remark        string `json:"remark"`
+	}
+	if err := c.ShouldBindJSON(&req); err != nil {
+		utils.Fail(c, 400, "参数错误")
+		return
+	}
+
+	updates := make(map[string]interface{})
+	if req.MachineCode != "" {
+		updates["machine_code"] = req.MachineCode
+	}
+	if req.MachineName != "" {
+		updates["machine_name"] = req.MachineName
+	}
+	if req.MachineType != "" {
+		updates["machine_type"] = req.MachineType
+	}
+	if req.Specification != "" {
+		updates["specification"] = req.Specification
+	}
+	if req.Workshop != "" {
+		updates["workshop"] = req.Workshop
+	}
+	if req.Status != nil {
+		updates["status"] = *req.Status
+	}
+	if req.Remark != "" {
+		updates["remark"] = req.Remark
+	}
+
+	if err := database.DB.Model(&machine).Updates(updates).Error; err != nil {
+		utils.Fail(c, 500, "更新失败")
+		return
+	}
+
+	utils.Success(c, machine)
+}
+
+func DeleteMachine(c *gin.Context) {
+	idStr := c.Param("id")
+	id, err := strconv.ParseUint(idStr, 10, 64)
+	if err != nil {
+		utils.Fail(c, 400, "ID格式错误")
+		return
+	}
+
+	var machine models.Machine
+	if err := database.DB.First(&machine, id).Error; err != nil {
+		utils.Fail(c, 404, "设备不存在")
+		return
+	}
+
+	database.DB.Delete(&machine)
+	utils.Success(c, nil)
+}

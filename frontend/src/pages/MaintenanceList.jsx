@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Table, Space, Button, Input, Select, Tag, Modal, Form, InputNumber, message, DatePicker, Popconfirm, Row, Col, Descriptions } from 'antd'
+import { Table, Space, Button, Input, Select, Tag, Modal, Form, InputNumber, message, DatePicker, Popconfirm, Row, Col, Descriptions, Card } from 'antd'
 import { PlusOutlined, SearchOutlined, EditOutlined, DeleteOutlined, CheckCircleOutlined, EyeOutlined } from '@ant-design/icons'
 import dayjs from 'dayjs'
 import { getMoldList } from '../api/mold'

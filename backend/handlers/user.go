@@ -185,7 +185,8 @@ type UpdateUserRequest struct {
 	RealName string `json:"real_name"`
 	Phone    string `json:"phone"`
 	Role     int8   `json:"role"`
-	Status   int8   `json:"status"`
+	Status   *int8  `json:"status"`
+	Password string `json:"password"`
 }
 
 func UpdateUser(c *gin.Context) {
@@ -218,8 +219,20 @@ func UpdateUser(c *gin.Context) {
 	if req.Role > 0 {
 		updates["role"] = req.Role
 	}
-	if req.Status > 0 {
-		updates["status"] = req.Status
+	if req.Status != nil {
+		updates["status"] = *req.Status
+	}
+	if req.Password != "" {
+		if len(req.Password) < 6 {
+			utils.Fail(c, 400, "密码至少6位")
+			return
+		}
+		hashed, err := utils.HashPassword(req.Password)
+		if err != nil {
+			utils.Fail(c, 500, "密码加密失败")
+			return
+		}
+		updates["password"] = hashed
 	}
 
 	if err := database.DB.Model(&user).Updates(updates).Error; err != nil {

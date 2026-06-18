@@ -13,3 +13,5 @@ export const updateUser = (id, data) => request.put(`/user/${id}`, data)
 export const deleteUser = (id) => request.delete(`/user/${id}`)
 
 export const changePassword = (data) => request.post('/user/change-password', data)
+
+export const resetPassword = (id, newPassword) => request.put(`/user/${id}`, { password: newPassword })

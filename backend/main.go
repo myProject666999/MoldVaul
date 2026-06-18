@@ -104,12 +104,16 @@ func main() {
 		{
 			location.GET("/list", handlers.GetLocationList)
 			location.POST("", handlers.CreateLocation)
+			location.PUT("/:id", handlers.UpdateLocation)
+			location.DELETE("/:id", handlers.DeleteLocation)
 		}
 
 		machine := api.Group("/machine")
 		{
 			machine.GET("/list", handlers.GetMachineList)
 			machine.POST("", handlers.CreateMachine)
+			machine.PUT("/:id", handlers.UpdateMachine)
+			machine.DELETE("/:id", handlers.DeleteMachine)
 		}
 	}
 
