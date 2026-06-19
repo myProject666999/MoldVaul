@@ -215,8 +215,8 @@ CREATE TABLE `cycle_logs` (
 
 -- 默认管理员 (密码: 123456)
 INSERT INTO `users` (`username`, `password`, `real_name`, `phone`, `role`, `status`) VALUES
-('admin', '$2a$10$yshMT/ztjiF.Z.fM0wj0hu/acmfBJD5THIRBbLuf1TM4QQIxz8YxW', '系统管理员', '13800000000', 1, 1),
-('operator01', '$2a$10$yshMT/ztjiF.Z.fM0wj0hu/acmfBJD5THIRBbLuf1TM4QQIxz8YxW', '张三', '13800000001', 2, 1);
+('admin', '$2a$10$pOFI13Cd0RSqPn1jU63Hp.af/eefLA47ni.FiIaCXY6ZjsFM323KS', '系统管理员', '13800000000', 1, 1),
+('operator01', '$2a$10$pOFI13Cd0RSqPn1jU63Hp.af/eefLA47ni.FiIaCXY6ZjsFM323KS', '张三', '13800000001', 2, 1);
 
 -- 示例库位
 INSERT INTO `locations` (`location_code`, `location_name`, `area`, `shelf`, `layer`, `status`) VALUES
